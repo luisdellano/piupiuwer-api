@@ -12,6 +12,8 @@ import { UnfavoritePiuController } from "./modules/pius/useCases/UnfavoritePiu/U
 import { UnlikePiuController } from "./modules/pius/useCases/UnlikePiu/UnlikePiuController";
 import { CreateUserController } from "./modules/users/useCase/createUser/CreateUserController";
 import { DeleteUserController } from "./modules/users/useCase/DeleteUser/DeleteUserController";
+import { FindFollowersController } from "./modules/users/useCase/FindFollowers/FindFollowersController";
+import { FindFollowingController } from "./modules/users/useCase/FindFollowing/FindFollowingController";
 import { FindUsersController } from "./modules/users/useCase/FindUsers/FindUsersController";
 import { FollowUserController } from "./modules/users/useCase/FollowUser/FollowUserController";
 import { UnfollowUserController } from "./modules/users/useCase/UnfollowUser/UnfollowUserController";
@@ -33,6 +35,8 @@ const followUserController = new FollowUserController();
 const findUsersController = new FindUsersController();
 const unfollowUserController = new UnfollowUserController();
 const deleteUserController = new DeleteUserController();
+const findFollowingController = new FindFollowingController();
+const findFollowersController = new FindFollowersController();
 
 routes.post(
     "/users/follow",
@@ -50,6 +54,8 @@ routes.delete(
     deleteUserController.handle
 );
 
+routes.get("/users/:userId/following", findFollowingController.handle);
+routes.get("/users/:userId/followers", findFollowersController.handle);
 routes.get("/users/:userId", findUsersController.handle);
 routes.get("/users", findUsersController.handle);
 routes.post("/users/register", createUserController.handle);
