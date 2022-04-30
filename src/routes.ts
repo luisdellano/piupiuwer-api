@@ -56,7 +56,7 @@ routes.delete(
 
 routes.get("/users/:userId/following", findFollowingController.handle);
 routes.get("/users/:userId/followers", findFollowersController.handle);
-routes.get("/users/:userId", findUsersController.handle);
+routes.get("/users/:userInfo", findUsersController.handle);
 routes.get("/users", findUsersController.handle);
 routes.post("/users/register", createUserController.handle);
 routes.post("/sessions/login", authenticateUserController.handle);

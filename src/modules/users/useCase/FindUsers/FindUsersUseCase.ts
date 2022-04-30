@@ -1,8 +1,8 @@
 import { prisma } from "../../../../database/prismaClient";
 
 export class FindUsersUseCase {
-    async execute(userId?: string) {
-        if (!userId) {
+    async execute(userInfo?: string) {
+        if (!userInfo) {
             const user = await prisma.users.findMany({
                 where: {},
                 orderBy: { username: "asc" },
@@ -10,12 +10,20 @@ export class FindUsersUseCase {
             return user;
         }
 
-        const user = await prisma.users.findFirst({
-            where: { id: userId },
+        const userWithId = await prisma.users.findFirst({
+            where: { id: userInfo },
         });
-        if (!user) {
-            throw new Error("User does not exist.");
+        if (!userWithId) {
+            const userWithUsername = await prisma.users.findMany({
+                where: { username: { contains: userInfo } },
+            });
+
+            if (userWithUsername.length === 0) {
+                throw new Error("Invalid route param.");
+            }
+
+            return userWithUsername;
         }
-        return user;
+        return userWithId;
     }
 }
