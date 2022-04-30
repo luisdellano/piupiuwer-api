@@ -2,8 +2,12 @@ import express, { NextFunction, Request, Response } from "express";
 import "express-async-errors";
 import { routes } from "./routes";
 const app = express();
+import swaggerUi from "swagger-ui-express";
+import { swaggerDocument } from "./config/swagger";
 
 app.use(express.json());
+
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(routes);
 

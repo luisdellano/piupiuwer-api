@@ -41,10 +41,6 @@ routes.post(
     unfavoritePiuController.handle
 );
 
-routes.delete(
-    "/pius/delete",
-    ensureAuthenticateUser,
-    deletePiuController.handle
-);
+routes.delete("/pius", ensureAuthenticateUser, deletePiuController.handle);
 
 export { routes };
