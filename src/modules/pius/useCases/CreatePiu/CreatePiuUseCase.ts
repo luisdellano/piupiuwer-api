@@ -9,15 +9,17 @@ interface ICreatePiu {
 export class CreatePiuUseCase {
     async execute({ message, userId }: ICreatePiu) {
         // Piu validation
-        const foundUser = prisma.users.findFirst({ where: { id: userId } });
+        const foundUser = await prisma.users.findFirst({
+            where: { id: userId },
+        });
         if (!foundUser) {
             throw new Error("User does not exist.");
         }
-        if ((message = "")) {
+        if (message === "") {
             throw new Error("Piu cannot be empty.");
         }
         if (message.length > 280) {
-            throw new Error("Piu excedes max. character length");
+            throw new Error("Piu excedes max. character length (280).");
         }
 
         // Save Piu

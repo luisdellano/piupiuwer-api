@@ -2,6 +2,7 @@ import { Router } from "express";
 import { ensureAuthenticateUser } from "./middlewares/ensureAuthenticateClient";
 import { AuthenticateUserController } from "./modules/account/authenticateUser/AuthenticateUserController";
 import { CreatePiuController } from "./modules/pius/useCases/CreatePiu/CreatePiuController";
+import { DeletePiuController } from "./modules/pius/useCases/DeletePiu/DeletePiuController";
 import { FavoritePiuController } from "./modules/pius/useCases/FavoritePiu/FavoritePiuController";
 import { FindPiusController } from "./modules/pius/useCases/FindPius/FindPiusController";
 import { LikePiuController } from "./modules/pius/useCases/LikePiu/LikePiuController";
@@ -19,6 +20,7 @@ const likePiuController = new LikePiuController();
 const favoritePiuController = new FavoritePiuController();
 const unlikePiuController = new UnlikePiuController();
 const unfavoritePiuController = new UnfavoritePiuController();
+const deletePiuController = new DeletePiuController();
 
 routes.post("/users/register", createUserController.handle);
 routes.post("/sessions/login", authenticateUserController.handle);
@@ -36,6 +38,11 @@ routes.post(
     "/pius/unfavorite",
     ensureAuthenticateUser,
     unfavoritePiuController.handle
+);
+routes.delete(
+    "/pius/delete",
+    ensureAuthenticateUser,
+    deletePiuController.handle
 );
 
 export { routes };
