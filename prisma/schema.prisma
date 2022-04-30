@@ -12,7 +12,7 @@ datasource db {
 
 model Pius {
     id         String   @id @default(uuid())
-    userId     String
+    userId     String?
     message    String
     likes      Int      @default(0)
     favourites Int      @default(0)
@@ -20,7 +20,7 @@ model Pius {
     updatedAt  DateTime @default(now())
 
 
-    user               Users                @relation(fields: [userId], references: [id])
+    user               Users?               @relation(fields: [userId], references: [id], onDelete: SetNull)
     usersPiusLikes     UsersPiusLikes[]
     usersPiusFavorites UsersPiusFavorites[]
     piusPiusChild      PiusPiusReplies[]    @relation("child_piu")
@@ -81,14 +81,14 @@ model usersUsersFollowing {
     id              String @id @default(uuid())
     followedUserId  String
     followingUserId String
-    followingUser   Users  @relation(name: "following_user", fields: [followingUserId], references: [id])
-    followedUser    Users  @relation(name: "followed_user", fields: [followedUserId], references: [id])
+    followingUser   Users  @relation(name: "following_user", fields: [followingUserId], references: [id], onDelete: Cascade)
+    followedUser    Users  @relation(name: "followed_user", fields: [followedUserId], references: [id], onDelete: Cascade)
 }
 
 model PiusPiusReplies {
     id        String @id @default(uuid())
     parentId  String
     childId   String
-    parentPiu Pius   @relation(name: "parent_piu", fields: [parentId], references: [id])
-    childPiu  Pius   @relation(name: "child_piu", fields: [childId], references: [id])
+    parentPiu Pius   @relation(name: "parent_piu", fields: [parentId], references: [id], onDelete: Cascade)
+    childPiu  Pius   @relation(name: "child_piu", fields: [childId], references: [id], onDelete: Cascade)
 }
