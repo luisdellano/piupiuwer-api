@@ -26,7 +26,7 @@ export class UnlikePiuUseCase {
         }
 
         // Unmake Relation
-        const favoriteRelation = await prisma.usersPiusLikes.delete({
+        const likedRelation = await prisma.usersPiusLikes.delete({
             where: {
                 id: likedPiu.id,
             },

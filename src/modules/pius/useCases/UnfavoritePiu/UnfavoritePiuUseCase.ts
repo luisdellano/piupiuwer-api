@@ -1,12 +1,12 @@
 import { prisma } from "../../../../database/prismaClient";
 
-interface IFavoritePiu {
+interface IUnfavoritePiu {
     piuId: string;
     userId: string;
 }
 
-export class FavoritePiuUseCase {
-    async execute({ piuId, userId }: IFavoritePiu) {
+export class UnfavoriteUseCase {
+    async execute({ piuId, userId }: IUnfavoritePiu) {
         // Piu Validation
         const piu = await prisma.pius.findFirst({
             where: {
@@ -21,23 +21,23 @@ export class FavoritePiuUseCase {
         const favoritedPiu = await prisma.usersPiusFavorites.findFirst({
             where: { AND: { piuId, userId } },
         });
-        if (favoritedPiu) {
-            throw new Error("Piu already favorited.");
+        if (!favoritedPiu) {
+            throw new Error("Piu is not favorited.");
         }
-        // Create Relation
-        const favoritedRelation = await prisma.usersPiusFavorites.create({
-            data: {
-                piuId,
-                userId,
+
+        // Unmake Relation
+        const favoriteRelation = await prisma.usersPiusFavorites.delete({
+            where: {
+                id: favoritedPiu.id,
             },
         });
 
         // Update Piu
         await prisma.pius.update({
             where: { id: piuId },
-            data: { favourites: { increment: 1 } },
+            data: { favourites: { decrement: 1 } },
         });
-        piu.favourites = piu.favourites + 1;
+        piu.favourites = piu.favourites - 1;
         return piu;
     }
 }
