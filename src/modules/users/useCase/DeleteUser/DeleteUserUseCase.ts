@@ -14,6 +14,6 @@ export class DeleteUserUseCase {
         }
 
         await prisma.users.delete({ where: { id: userId } });
-        return true;
+        return { success: true };
     }
 }
