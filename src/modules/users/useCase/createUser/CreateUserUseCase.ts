@@ -31,7 +31,7 @@ export class CreateUserUseCase {
         });
 
         if (userExists) {
-            throw new Error("User already exists.");
+            throw new Error("Email or CPF already being used.");
         }
 
         // Encrypt Password
