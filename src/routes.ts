@@ -4,6 +4,7 @@ import { AuthenticateUserController } from "./modules/account/authenticateUser/A
 import { CreatePiuController } from "./modules/pius/useCases/CreatePiu/CreatePiuController";
 import { DeletePiuController } from "./modules/pius/useCases/DeletePiu/DeletePiuController";
 import { FavoritePiuController } from "./modules/pius/useCases/FavoritePiu/FavoritePiuController";
+import { FindFavoritedPiusController } from "./modules/pius/useCases/FindFavoritedPius/FindFavoritedPiusController";
 import { FindLikedPiusController } from "./modules/pius/useCases/FindLikedPius/FindLikedPiusController";
 import { FindPiusController } from "./modules/pius/useCases/FindPius/FindPiusController";
 import { LikePiuController } from "./modules/pius/useCases/LikePiu/LikePiuController";
@@ -23,12 +24,14 @@ const unlikePiuController = new UnlikePiuController();
 const unfavoritePiuController = new UnfavoritePiuController();
 const deletePiuController = new DeletePiuController();
 const findLikedPiusController = new FindLikedPiusController();
+const findFavoritedPiusController = new FindFavoritedPiusController();
 
 routes.post("/users/register", createUserController.handle);
 routes.post("/sessions/login", authenticateUserController.handle);
 
 routes.get("/pius", findPiusController.handle);
 routes.get("/pius/liked", findLikedPiusController.handle);
+routes.get("/pius/favorited", findFavoritedPiusController.handle);
 
 routes.post("/pius", ensureAuthenticateUser, createPiuController.handle);
 routes.post("/pius/like", ensureAuthenticateUser, likePiuController.handle);
