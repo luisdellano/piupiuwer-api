@@ -1,0 +1,92 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Pius {
+    id         String   @id @default(uuid())
+    userId     String
+    message    String
+    likes      Int      @default(0)
+    favourites Int      @default(0)
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @default(now())
+
+
+    user               Users                @relation(fields: [userId], references: [id])
+    usersPiusLikes     UsersPiusLikes[]
+    usersPiusFavorites UsersPiusFavorites[]
+    piusPiusChild      PiusPiusReplies[]    @relation("child_piu")
+    piusPiusParent     PiusPiusReplies[]    @relation("parent_piu")
+
+    @@map("pius")
+}
+
+model Users {
+    id        String   @id @default(uuid())
+    username  String
+    firstName String
+    lastName  String
+    email     String
+    cpf       String
+    phone     String
+    password  String
+    about     String?
+    photo     String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
+
+    usersPiusLikes     UsersPiusLikes[]
+    usersPiusFavorites UsersPiusFavorites[]
+
+    usersUsersFollowing usersUsersFollowing[] @relation("following_user")
+    usersUsersFollowed  usersUsersFollowing[] @relation("followed_user")
+    Pius                Pius[]
+}
+
+model UsersPiusLikes {
+    id     String @id @default(uuid())
+    userId String
+    piuId  String
+
+    createdAt DateTime @default(now())
+
+    Users Users @relation(fields: [userId], references: [id])
+    Pius  Pius  @relation(fields: [piuId], references: [id])
+    @@map("users-pius-likes")
+}
+
+model UsersPiusFavorites {
+    id     String @id @default(uuid())
+    userId String
+    piuId  String
+
+    createdAt DateTime @default(now())
+
+    Users Users @relation(fields: [userId], references: [id])
+    Pius  Pius  @relation(fields: [piuId], references: [id])
+    @@map("users-pius-favorites")
+}
+
+model usersUsersFollowing {
+    id              String @id @default(uuid())
+    followedUserId  String
+    followingUserId String
+    followingUser   Users  @relation(name: "following_user", fields: [followingUserId], references: [id])
+    followedUser    Users  @relation(name: "followed_user", fields: [followedUserId], references: [id])
+}
+
+model PiusPiusReplies {
+    id        String @id @default(uuid())
+    parentId  String
+    childId   String
+    parentPiu Pius   @relation(name: "parent_piu", fields: [parentId], references: [id])
+    childPiu  Pius   @relation(name: "child_piu", fields: [childId], references: [id])
+}
