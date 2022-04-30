@@ -11,6 +11,10 @@ import { LikePiuController } from "./modules/pius/useCases/LikePiu/LikePiuContro
 import { UnfavoritePiuController } from "./modules/pius/useCases/UnfavoritePiu/UnfavoritePiuController";
 import { UnlikePiuController } from "./modules/pius/useCases/UnlikePiu/UnlikePiuController";
 import { CreateUserController } from "./modules/users/useCase/createUser/CreateUserController";
+import { DeleteUserController } from "./modules/users/useCase/DeleteUser/DeleteUserController";
+import { FindUsersController } from "./modules/users/useCase/FindUsers/FindUsersController";
+import { FollowUserController } from "./modules/users/useCase/FollowUser/FollowUserController";
+import { UnfollowUserController } from "./modules/users/useCase/UnfollowUser/UnfollowUserController";
 
 const routes = Router();
 
@@ -25,7 +29,29 @@ const unfavoritePiuController = new UnfavoritePiuController();
 const deletePiuController = new DeletePiuController();
 const findLikedPiusController = new FindLikedPiusController();
 const findFavoritedPiusController = new FindFavoritedPiusController();
+const followUserController = new FollowUserController();
+const findUsersController = new FindUsersController();
+const unfollowUserController = new UnfollowUserController();
+const deleteUserController = new DeleteUserController();
 
+routes.post(
+    "/users/follow",
+    ensureAuthenticateUser,
+    followUserController.handle
+);
+routes.post(
+    "/users/unfollow",
+    ensureAuthenticateUser,
+    unfollowUserController.handle
+);
+routes.delete(
+    "/users/delete",
+    ensureAuthenticateUser,
+    deleteUserController.handle
+);
+
+routes.get("/users/:userId", findUsersController.handle);
+routes.get("/users", findUsersController.handle);
 routes.post("/users/register", createUserController.handle);
 routes.post("/sessions/login", authenticateUserController.handle);
 
