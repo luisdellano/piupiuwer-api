@@ -6,8 +6,12 @@ export class FindPiusController {
         const createPiuUseCase = new FindPiusUseCase();
 
         const { page, piusPerPage } = request.body;
-        const result = await createPiuUseCase.execute({ page, piusPerPage });
-
+        const { userId } = request.query;
+        const result = await createPiuUseCase.execute({
+            page,
+            piusPerPage,
+            userId,
+        });
         return response.json(result);
     }
 }

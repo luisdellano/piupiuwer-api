@@ -1,4 +1,3 @@
-import { hash } from "bcrypt";
 import { prisma } from "../../../../database/prismaClient";
 
 interface ICreatePiu {

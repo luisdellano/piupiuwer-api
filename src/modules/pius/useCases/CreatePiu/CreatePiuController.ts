@@ -6,7 +6,6 @@ export class CreatePiuController {
         const createPiuUseCase = new CreatePiuUseCase();
 
         const { message } = request.body;
-
         const { userId } = request;
 
         const result = await createPiuUseCase.execute({

@@ -25,8 +25,9 @@ const deletePiuController = new DeletePiuController();
 routes.post("/users/register", createUserController.handle);
 routes.post("/sessions/login", authenticateUserController.handle);
 
+routes.get("/pius", findPiusController.handle);
+
 routes.post("/pius", ensureAuthenticateUser, createPiuController.handle);
-routes.get("/pius", ensureAuthenticateUser, findPiusController.handle);
 routes.post("/pius/like", ensureAuthenticateUser, likePiuController.handle);
 routes.post(
     "/pius/favorite",
@@ -39,6 +40,7 @@ routes.post(
     ensureAuthenticateUser,
     unfavoritePiuController.handle
 );
+
 routes.delete(
     "/pius/delete",
     ensureAuthenticateUser,

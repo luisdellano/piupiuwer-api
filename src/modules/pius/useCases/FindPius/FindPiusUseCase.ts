@@ -3,9 +3,10 @@ import { prisma } from "../../../../database/prismaClient";
 interface IFindPius {
     page: number;
     piusPerPage?: number;
+    userId?: string;
 }
 export class FindPiusUseCase {
-    async execute({ page, piusPerPage }: IFindPius) {
+    async execute({ page, piusPerPage, userId }: IFindPius) {
         piusPerPage = piusPerPage || 10;
 
         if (page < 0) {
@@ -23,12 +24,28 @@ export class FindPiusUseCase {
             skip = 0;
         }
 
+        const existUser = await prisma.users.findFirst({
+            where: { id: userId },
+        });
+        if (!existUser) {
+            throw new Error("User does not exist.");
+        }
+        if (userId) {
+            const pius = await prisma.pius.findMany({
+                where: { userId },
+                skip: skip,
+                take: piusPerPage,
+                include: { user: {} },
+                orderBy: { createdAt: "desc" },
+            });
+            return pius;
+        }
         const pius = await prisma.pius.findMany({
             skip: skip,
             take: piusPerPage,
+            include: { user: {} },
             orderBy: { createdAt: "desc" },
         });
-
         return pius;
     }
 }
