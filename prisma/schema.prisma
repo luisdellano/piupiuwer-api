@@ -58,8 +58,8 @@ model UsersPiusLikes {
 
     createdAt DateTime @default(now())
 
-    Users Users @relation(fields: [userId], references: [id])
-    Pius  Pius  @relation(fields: [piuId], references: [id])
+    Users Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+    Pius  Pius  @relation(fields: [piuId], references: [id], onDelete: Cascade)
     @@map("users-pius-likes")
 }
 
@@ -70,8 +70,8 @@ model UsersPiusFavorites {
 
     createdAt DateTime @default(now())
 
-    Users Users @relation(fields: [userId], references: [id])
-    Pius  Pius  @relation(fields: [piuId], references: [id])
+    Users Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+    Pius  Pius  @relation(fields: [piuId], references: [id], onDelete: Cascade)
     @@map("users-pius-favorites")
 }
 
