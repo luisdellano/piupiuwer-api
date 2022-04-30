@@ -5,6 +5,7 @@ import { CreatePiuController } from "./modules/pius/useCases/CreatePiu/CreatePiu
 import { FavoritePiuController } from "./modules/pius/useCases/FavoritePiu/FavoritePiuController";
 import { FindPiusController } from "./modules/pius/useCases/FindPius/FindPiusController";
 import { LikePiuController } from "./modules/pius/useCases/LikePiu/LikePiuController";
+import { UnlikePiuController } from "./modules/pius/useCases/UnlikePiu/UnlikePiuController";
 import { CreateUserController } from "./modules/users/useCase/createUser/CreateUserController";
 
 const routes = Router();
@@ -15,6 +16,7 @@ const createPiuController = new CreatePiuController();
 const findPiusController = new FindPiusController();
 const likePiuController = new LikePiuController();
 const favoritePiuController = new FavoritePiuController();
+const unlikePiuController = new UnlikePiuController();
 
 routes.post("/users/register", createUserController.handle);
 routes.post("/sessions/login", authenticateUserController.handle);
@@ -27,5 +29,6 @@ routes.post(
     ensureAuthenticateUser,
     favoritePiuController.handle
 );
+routes.post("/pius/unlike", ensureAuthenticateUser, unlikePiuController.handle);
 
 export { routes };
