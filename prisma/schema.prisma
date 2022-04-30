@@ -40,6 +40,8 @@ model Users {
     password  String
     about     String?
     photo     String?
+    followers Int      @default(0)
+    following Int      @default(0)
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now())
 
